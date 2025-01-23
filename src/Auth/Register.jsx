@@ -1,78 +1,114 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import useProvider from "../Hooks/useProvider";
 import { updateProfile } from "firebase/auth";
 import { auth } from "../Firebase/firebase.config";
 import { Helmet } from "react-helmet-async";
-
-const profilePhoto_hosting_key = import.meta.env.VITE_IMAGE_HOSTING_KEY;
-const image_hosting_api = `https://api.imgbb.com/1/upload?key=${profilePhoto_hosting_key}`;
+import Lottie from "lottie-react";
+import useAxiosPublic from "../Hooks/useAxiosPublic";
 
 const Register = () => {
   const {
     register,
     handleSubmit,
-    watch,
     formState: { errors },
   } = useForm();
   const { createUser, signWithGoogle } = useProvider();
-  const navigate = useNavigate()
-  const onSubmit = async (data) => {
-    const formData = new FormData();
-    const file = data.profilePhoto[0]; // Access the uploaded file
-    formData.append("image", file);
+  const navigate = useNavigate();
 
-    try {
-      const response = await fetch(image_hosting_api, {
-        method: "POST",
-        body: formData,
-      });
-      const result = await response.json();
+  const [animationData, setAnimationData] = useState(null);
+  const [error, setError] = useState(""); // Moved inside the Register component
+  const axiosPublic = useAxiosPublic();
 
-      if (result.success) {
-        const imageUrl = result.data.url; // Get the uploaded image URL
-
-        // Add the image URL to the `data` object
-        const updatedData = {
-          ...data,
-          profilePhoto: imageUrl,
-        };
-
-        console.log(updatedData); // Logs the updated data with the image URL
-
-        createUser(updatedData.email, updatedData.password)
-        .then(res=>{
-            updateProfile(auth.currentUser,{
-                displayName:updatedData.name,
-                photoURL: updatedData.profilePhoto
-            })
-            .then(()=>{
-                console.log('Profile Updated')
-            })
-            console.log('USer:', res.user)
-            navigate('/')
-        })
-        .catch(error=>{
-            console.error('Error in sign up', error.message)
-        })
-      } else {
-        console.error("Image upload failed:", result.error.message);
+  useEffect(() => {
+    const fetchAnimationData = async () => {
+      try {
+        const response = await fetch("/register-lottie.json");
+        const data = await response.json();
+        setAnimationData(data);
+      } catch (error) {
+        console.error("Error loading animation:", error);
       }
-    } catch (error) {
-      console.error("Error uploading image:", error.message);
-    }
+    };
+
+    fetchAnimationData();
+  }, []);
+
+  const onSubmit = async (data) => {
+    // Add default coins based on role
+    const defaultCoins = data.role === "worker" ? 10 : 50;
+
+    const updatedData = {
+      ...data,
+      coins: defaultCoins, // Add default coins to the user data
+    };
+
+    createUser(updatedData.email, updatedData.password)
+      .then(() => {
+        updateProfile(auth.currentUser, {
+          displayName: updatedData.name,
+          photoURL: updatedData.profilePhoto, // Directly use the URL from input
+        })
+          .then(() => {
+            console.log("Profile Updated");
+
+            // Save user to database with default coins
+            axiosPublic
+              .post("/users", updatedData)
+              .then((res) => {
+                console.log(res.data);
+              })
+              .catch((error) => {
+                console.error("Sign Up details in db", error.message);
+              });
+
+            setError("");
+            navigate("/"); // Navigate after successful registration
+          })
+          .catch((error) => {
+            setError(error.message);
+            console.error("Error updating profile:", error.message);
+          });
+      })
+      .catch((error) => {
+        console.error("Error in sign-up:", error.message);
+        setError(error.message);
+      });
   };
 
   const handleGoogleSignIn = () => {
     signWithGoogle()
-    .then(res=>{
-        console.log('Google Logged In ',res.user )
-    })
-    .catch(error=> {
-        console.error('Google sign in error ', error.message)
-    })
-  }
+      .then((res) => {
+        const user = res.user;
+
+        // Default role as 'Worker' for Google sign-in users
+        const defaultUserData = {
+          name: user.displayName,
+          email: user.email,
+          profilePhoto: user.photoURL, // Use photoURL provided by Google
+          role: "worker",
+          coins: 10, // Default coins for workers
+        };
+
+        // Save user data to the database
+        axiosPublic
+          .post("/users", defaultUserData)
+          .then((dbRes) => {
+            console.log("User saved to database:", dbRes.data);
+            setError("");
+            navigate("/"); // Navigate after successful sign-in
+          })
+          .catch((error) => {
+            console.error("Error saving Google user to database:", error.message);
+            setError("");
+          });
+      })
+      .catch((error) => {
+        console.error("Google sign-in error:", error.message);
+        setError(error.message);
+      });
+  };
 
   return (
     <div>
@@ -81,16 +117,24 @@ const Register = () => {
       </Helmet>
       <div className="hero bg-base-200 min-h-screen">
         <div className="hero-content flex-col lg:flex-row-reverse">
-          <div className="text-center lg:text-left">
-            <h1 className="text-5xl font-bold">Register now!</h1>
-            <p className="py-6">
-              Provident cupiditate voluptatem et in. Quaerat fugiat ut assumenda
-              excepturi exercitationem quasi. In deleniti eaque aut repudiandae
-              et a id nisi.
-            </p>
+          {/* Lottie Animation */}
+          <div className="text-center lg:ml-10 lg:text-left">
+            {animationData && (
+              <Lottie
+                animationData={animationData}
+                loop={true}
+                autoplay={true}
+                style={{ height: "300px", width: "300px" }}
+              />
+            )}
           </div>
+
+          {/* Registration Form */}
           <div className="card bg-base-100 w-full max-w-sm shrink-0 shadow-2xl">
             <form onSubmit={handleSubmit(onSubmit)} className="card-body">
+              <h1 className="text-5xl font-bold mt-2 mb-3 text-center">
+                Register now!
+              </h1>
               {/* Name */}
               <div className="form-control">
                 <label className="label">
@@ -133,22 +177,46 @@ const Register = () => {
                 )}
               </div>
 
-              {/* Profile Photo */}
+              {/* Profile Photo (URL input instead of file upload) */}
               <div className="form-control">
                 <label className="label">
-                  <span className="label-text">Profile Photo</span>
+                  <span className="label-text">Profile Photo URL</span>
                 </label>
                 <input
-                  type="file"
+                  type="text"
                   {...register("profilePhoto", {
-                    required: "Profile photo is required.",
+                    required: "Profile photo URL is required.",
                   })}
-                  className="file-input file-input-bordered w-full max-w-xs"
+                  placeholder="Profile Photo URL"
+                  className="input input-bordered"
                 />
                 {errors.profilePhoto && (
                   <span className="text-red-500 text-xs">
                     {errors.profilePhoto.message}
                   </span>
+                )}
+              </div>
+
+              {/* Role */}
+              <div className="form-control">
+                <label className="label">
+                  <span className="label-text">Role</span>
+                </label>
+                <select
+                  {...register("role", { required: "Role is required" })}
+                  className="select select-bordered w-full max-w-xs"
+                  defaultValue=""
+                >
+                  <option value="" disabled>
+                    Choose Your Role
+                  </option>
+                  <option value="worker">Worker</option>
+                  <option value="buyer">Buyer</option>
+                </select>
+                {errors.role && (
+                  <p className="text-red-500 text-sm mt-2">
+                    {errors.role.message}
+                  </p>
                 )}
               </div>
 
@@ -198,8 +266,16 @@ const Register = () => {
               </p>
             </form>
             <div className="flex justify-center w-full px-8 mb-5">
-                <button onClick={handleGoogleSignIn} className="btn btn-primary w-full">Sign In With Google</button>
+              <button
+                onClick={handleGoogleSignIn}
+                className="btn btn-primary w-full"
+              >
+                Sign In With Google
+              </button>
             </div>
+            {error && (
+              <span className="text-red-500 text-center mb-3">{error}</span>
+            )}
           </div>
         </div>
       </div>

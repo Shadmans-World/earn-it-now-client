@@ -15,7 +15,7 @@ const Navbar = () => {
         <NavLink to="/available Coin">Available Coin</NavLink>
       </li>
       <li>
-        <NavLink to="https://github.com/Programming-Hero-Web-Course4/b10a12-client-side-Shadmans-World">
+        <NavLink to="https://github.com/Programming-Hero-Web-Course4/b10a12-client-side-Shadmans-World" target="_blank">
           Join as Developer
         </NavLink>
       </li>
@@ -29,7 +29,7 @@ const Navbar = () => {
         <NavLink to="/register">Register</NavLink>
       </li>
       <li>
-        <NavLink to="https://github.com/Programming-Hero-Web-Course4/b10a12-client-side-Shadmans-World">
+        <NavLink to="https://github.com/Programming-Hero-Web-Course4/b10a12-client-side-Shadmans-World" target="_blank">
           Join as Developer
         </NavLink>
       </li>
@@ -53,7 +53,7 @@ const Navbar = () => {
   };
 
   return (
-    <div>
+    <div className="px-2">
       <div className="navbar bg-base-100">
         <div className="navbar-start">
           <div className="dropdown">
@@ -75,12 +75,16 @@ const Navbar = () => {
             </div>
             <ul
               tabIndex={0}
-              className="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow"
+              className="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow z-10"
             >
               {links}
             </ul>
           </div>
-          <a className="btn btn-ghost text-xl">daisyUI</a>
+         <div className="flex items-center">
+         <img src="/income.png" alt="" className="w-10 rounded-3xl"/>
+         <a className="btn btn-ghost text-xl hidden md:flex">EIN</a>
+         </div>
+
         </div>
         <div className="navbar-center hidden lg:flex">
           <ul className="menu menu-horizontal px-1">{links}</ul>
@@ -95,10 +99,10 @@ const Navbar = () => {
               >
                 <div className="avatar">
                   <div className="ring-primary ring-offset-base-100 w-10 rounded-full ring ring-offset-2">
-                    <img src={user?.photoURL} alt="user profile photo" />
+                    <img className="object-cover" src={user?.photoURL} alt="user profile photo" />
                   </div>
                 </div>
-                <span>{user.displayName}</span>
+                <span>{user? user.displayName : "User Name"}</span>
               </li>
 
               {/* Logout Button (Dropdown) */}
