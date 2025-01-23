@@ -3,10 +3,12 @@ import BasicLayout from "../Layouts/BasicLayout";
 import Login from "../Auth/Login";
 import Register from "../Auth/Register";
 import Home from "../Pages/Home/Home";
+import ErrorPage from "../Components/Error Page/ErrorPage";
 
 export const router = createBrowserRouter([
   {
     path: "/",
+    errorElement:<ErrorPage/>,
     element: <BasicLayout />,
     children: [
         {

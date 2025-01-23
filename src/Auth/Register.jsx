@@ -4,6 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import useProvider from "../Hooks/useProvider";
 import { updateProfile } from "firebase/auth";
 import { auth } from "../Firebase/firebase.config";
+import { Helmet } from "react-helmet-async";
 
 const profilePhoto_hosting_key = import.meta.env.VITE_IMAGE_HOSTING_KEY;
 const image_hosting_api = `https://api.imgbb.com/1/upload?key=${profilePhoto_hosting_key}`;
@@ -75,6 +76,9 @@ const Register = () => {
 
   return (
     <div>
+      <Helmet>
+        <title>Register || EIN</title>
+      </Helmet>
       <div className="hero bg-base-200 min-h-screen">
         <div className="hero-content flex-col lg:flex-row-reverse">
           <div className="text-center lg:text-left">
