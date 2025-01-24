@@ -55,7 +55,17 @@ const Dashboard = () => {
                 )
             }
 
-           
+            {
+                buyers && (
+                    <>
+                    <li><NavLink to='/buyerHome'> <FaHome className="text-2xl"/><span className="text-[1rem]">Home</span></NavLink></li>
+                    <li><NavLink to='/buyer-addTask'> <FaTasks className="text-2xl"/><span className="text-[1rem]">Add New Task</span></NavLink></li>
+                    <li><NavLink to='/buyer-task'> <MdTask  className="text-2xl"/><span className="text-[1rem]">My Task's </span></NavLink></li>
+                    <li><NavLink to='/purchaseCoin'> <FaCoins  className="text-2xl"/><span className="text-[1rem]">Purchase Coin</span></NavLink></li>
+
+                    </>
+                )
+            }
         </ul>
       </div>
 
