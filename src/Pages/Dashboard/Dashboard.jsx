@@ -26,19 +26,19 @@ const Dashboard = () => {
           {admin && (
             <>
               <li>
-                <NavLink to="/adminHome">
+                <NavLink to="/dashboard/adminHome">
                   <FaHome className="text-2xl" />{" "}
                   <span className="text-[1rem]">Home</span>
                 </NavLink>
               </li>
               <li>
-                <NavLink to="/manage-user">
+                <NavLink to="/dashboard/manage-user">
                   <FaUsers className="text-2xl" />{" "}
                   <span className="text-[1rem]">Manage User</span>
                 </NavLink>
               </li>
               <li>
-                <NavLink to="/manage-task">
+                <NavLink to="/dashboard/manage-task">
                   <FaTasks className="text-2xl" />{" "}
                   <span className="text-[1rem]">Manage Task</span>
                 </NavLink>
@@ -49,28 +49,28 @@ const Dashboard = () => {
           {workers && (
             <>
               <li>
-                <NavLink to="/workerHome">
+                <NavLink to="/dashboard/workerHome">
                   {" "}
                   <FaHome className="text-2xl" />
                   <span className="text-[1rem]">Home</span>
                 </NavLink>
               </li>
               <li>
-                <NavLink to="/worker-task">
+                <NavLink to="/dashboard/worker-task">
                   {" "}
                   <FaTasks className="text-2xl" />
                   <span className="text-[1rem]">Task List</span>
                 </NavLink>
               </li>
               <li>
-                <NavLink to="/worker-submission">
+                <NavLink to="/dashboard/worker-submission">
                   {" "}
                   <AiOutlineFileDone className="text-2xl" />
                   <span className="text-[1rem]">My Submission</span>
                 </NavLink>
               </li>
               <li>
-                <NavLink to="/worker-withdrawal">
+                <NavLink to="/dashboard/worker-withdrawal">
                   {" "}
                   <BiMoneyWithdraw className="text-2xl" />
                   <span className="text-[1rem]">My Withdrawals</span>
@@ -82,28 +82,28 @@ const Dashboard = () => {
           {buyers && (
             <>
               <li>
-                <NavLink to="/buyerHome">
+                <NavLink to="/dashboard/buyerHome">
                   {" "}
                   <FaHome className="text-2xl" />
                   <span className="text-[1rem]">Home</span>
                 </NavLink>
               </li>
               <li>
-                <NavLink to="/buyer-addTask">
+                <NavLink to="/dashboard/buyer-addTask">
                   {" "}
                   <FaTasks className="text-2xl" />
                   <span className="text-[1rem]">Add New Task</span>
                 </NavLink>
               </li>
               <li>
-                <NavLink to="/buyer-task">
+                <NavLink to="/dashboard/buyer-task">
                   {" "}
                   <MdTask className="text-2xl" />
                   <span className="text-[1rem]">My Task's </span>
                 </NavLink>
               </li>
               <li>
-                <NavLink to="/purchaseCoin">
+                <NavLink to="/dashboard/purchaseCoin">
                   {" "}
                   <FaCoins className="text-2xl" />
                   <span className="text-[1rem]">Purchase Coin</span>
@@ -115,7 +115,7 @@ const Dashboard = () => {
       </div>
 
       {/* MAin Dashboard Content */}
-      <div className="flex flex-col">
+      <div className="w-full">
         <Outlet />
         {/* <Footer/> */}
       </div>

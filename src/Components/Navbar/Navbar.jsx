@@ -1,18 +1,21 @@
 import React, { useState } from "react";
 import useProvider from "../../Hooks/useProvider";
 import { NavLink } from "react-router-dom";
+import useDbUser from "../../Hooks/useDbUser";
+import { FaCoins } from "react-icons/fa";
 
 const Navbar = () => {
   const { user, logOut } = useProvider();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-
+  const [dbUser] = useDbUser()
+  console.log(dbUser.coin)
   const links = user ? (
     <>
       <li>
         <NavLink to="/dashboard">Dashboard</NavLink>
       </li>
       <li>
-        <NavLink to="/available Coin">Available Coin</NavLink>
+        <NavLink to="/available Coin"><FaCoins></FaCoins>{dbUser.coins}</NavLink>
       </li>
       <li>
         <NavLink to="https://github.com/Programming-Hero-Web-Course4/b10a12-client-side-Shadmans-World" target="_blank">
