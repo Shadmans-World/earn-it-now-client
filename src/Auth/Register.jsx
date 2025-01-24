@@ -16,7 +16,7 @@ const Register = () => {
   } = useForm();
   const { createUser, signWithGoogle } = useProvider();
   const navigate = useNavigate();
-
+  const image_hosting_api = `https://api.imgbb.com/1/upload?key=${import.meta.env.VITE_IMAGE_HOSTING_KEY}`
   const [animationData, setAnimationData] = useState(null);
   const [error, setError] = useState(""); // Moved inside the Register component
   const axiosPublic = useAxiosPublic();
@@ -36,45 +36,68 @@ const Register = () => {
   }, []);
 
   const onSubmit = async (data) => {
-    // Add default coins based on role
-    const defaultCoins = data.role === "worker" ? 10 : 50;
-
-    const updatedData = {
-      ...data,
-      coins: defaultCoins, // Add default coins to the user data
-    };
-
-    createUser(updatedData.email, updatedData.password)
-      .then(() => {
-        updateProfile(auth.currentUser, {
-          displayName: updatedData.name,
-          photoURL: updatedData.profilePhoto, // Directly use the URL from input
-        })
+    const formData = new FormData();
+    const file = data.profilePhoto[0]; // Access the uploaded file
+    formData.append("image", file);
+  
+    try {
+      const response = await fetch(image_hosting_api, {
+        method: "POST",
+        body: formData,
+      });
+      const result = await response.json();
+  
+      if (result.success) {
+        const imageUrl = result.data.url; // Get the uploaded image URL
+  
+        // Add default coins based on role
+        const defaultCoins = data.role === "worker" ? 10 : 50;
+  
+        const updatedData = {
+          ...data,
+          profilePhoto: imageUrl,
+          coins: defaultCoins, // Add default coins to the user data
+        };
+  
+        createUser(updatedData.email, updatedData.password)
           .then(() => {
-            console.log("Profile Updated");
-
-            // Save user to database with default coins
-            axiosPublic
-              .post("/users", updatedData)
-              .then((res) => {
-                console.log(res.data);
+            updateProfile(auth.currentUser, {
+              displayName: updatedData.name,
+              photoURL: updatedData.profilePhoto,
+            })
+              .then(() => {
+                console.log("Profile Updated");
+  
+                // Save user to database with default coins
+                axiosPublic
+                  .post("/users", updatedData)
+                  .then((res) => {
+                    console.log(res.data);
+                  })
+                  .catch((error) => {
+                    console.error("Sign Up details in db", error.message);
+                  });
+  
+                setError("");
+                navigate("/");
               })
               .catch((error) => {
-                console.error("Sign Up details in db", error.message);
+                setError(error.message);
+                console.error("Error updating profile:", error.message);
               });
-
-            setError("");
-            navigate("/dashboard"); // Navigate after successful registration
           })
           .catch((error) => {
+            console.error("Error in sign-up:", error.message);
             setError(error.message);
-            console.error("Error updating profile:", error.message);
           });
-      })
-      .catch((error) => {
-        console.error("Error in sign-up:", error.message);
-        setError(error.message);
-      });
+      } else {
+        setError(result.error.message);
+        console.error("Image upload failed:", result.error.message);
+      }
+    } catch (error) {
+      setError(error.message);
+      console.error("Error uploading image:", error.message);
+    }
   };
 
   const handleGoogleSignIn = () => {
@@ -177,18 +200,17 @@ const Register = () => {
                 )}
               </div>
 
-              {/* Profile Photo (URL input instead of file upload) */}
-              <div className="form-control">
+             {/* Profile Photo */}
+             <div className="form-control">
                 <label className="label">
-                  <span className="label-text">Profile Photo URL</span>
+                  <span className="label-text">Profile Photo</span>
                 </label>
                 <input
-                  type="text"
+                  type="file"
                   {...register("profilePhoto", {
-                    required: "Profile photo URL is required.",
+                    required: "Profile photo is required.",
                   })}
-                  placeholder="Profile Photo URL"
-                  className="input input-bordered"
+                  className="file-input file-input-bordered w-full max-w-xs"
                 />
                 {errors.profilePhoto && (
                   <span className="text-red-500 text-xs">
