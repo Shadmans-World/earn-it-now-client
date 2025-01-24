@@ -38,7 +38,7 @@ const Login = () => {
         console.log("Logged In User: ", res.user);
        
         setError("")
-        navigate('/')
+        navigate('/dashboard')
       })
       .catch((error) => {
         console.error("Error when login", error.message);
@@ -68,7 +68,7 @@ const Login = () => {
           .then((dbRes) => {
             console.log("User saved to database:", dbRes.data);
             setError("");
-            navigate("/"); // Navigate after successful sign-in
+            navigate("/dashboard"); // Navigate after successful sign-in
           })
           .catch((error) => {
             console.error("Error saving Google user to database:", error.message);

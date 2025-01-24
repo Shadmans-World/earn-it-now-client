@@ -64,7 +64,7 @@ const Register = () => {
               });
 
             setError("");
-            navigate("/"); // Navigate after successful registration
+            navigate("/dashboard"); // Navigate after successful registration
           })
           .catch((error) => {
             setError(error.message);
@@ -97,7 +97,7 @@ const Register = () => {
           .then((dbRes) => {
             console.log("User saved to database:", dbRes.data);
             setError("");
-            navigate("/"); // Navigate after successful sign-in
+            navigate("/dashboard"); // Navigate after successful sign-in
           })
           .catch((error) => {
             console.error("Error saving Google user to database:", error.message);

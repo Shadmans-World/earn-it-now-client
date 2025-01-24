@@ -1,39 +1,52 @@
 import React from "react";
 import { IoNotifications } from "react-icons/io5";
-import { NavLink } from "react-router-dom";
+import useDbUser from "../../Hooks/useDbUser";
 
 const DashboardNavbar = () => {
-    const links = <>
-    <li>Available Coins</li>
-    <li>User Image</li>
-    <li><NavLink>Available Coins</NavLink></li>
-    <li><NavLink></NavLink></li>
+  const [dbUser] = useDbUser(); // Get the current user's data from the hook
 
-    </>
   return (
     <div>
-      <div className="navbar bg-base-100">
+      <div className="navbar border-b-2 bg-base-100">
+        {/* Navbar Start */}
         <div className="navbar-start">
-          
-          <a className="btn btn-ghost text-xl">daisyUI</a>
+          <a className="btn btn-ghost text-xl">Dashboard</a>
         </div>
-        <div className="navbar-end flex gap-2 items-center">
-          <div className="flex flex-col">
-            <div className="flex gap-2 items-center mb-2r">
-                <NavLink className="px-2 border-r-2">Available Coin</NavLink>
-                
-                <NavLink className="px-2">User Image</NavLink>
+
+        {/* Navbar End */}
+        <div className="navbar-end flex gap-4 items-center">
+          {/* User Data */}
+          <div className="flex flex-col items-start">
+            <div className="flex gap-4 items-center mb-2">
+              <div className="px-2 border-r-2">
+                <span className="text-gray-600 font-medium">Available Coin:</span>
+                <span className="text-primary font-bold ml-1">{dbUser?.coins || 0}</span>
+              </div>
+              <div className="px-2">
+                <img
+                  src={dbUser?.profilePhoto || "https://via.placeholder.com/150"}
+                  alt="User Avatar"
+                  className="w-10 h-10 rounded-full object-cover"
+                />
+              </div>
             </div>
-            <div className="flex gap-2 items-center">
-                <NavLink className="px-2 border-r-2">User Role</NavLink>
-                <NavLink className="px-2">User Name</NavLink>
+            <div className="flex gap-4 items-center">
+              <div className="px-2 border-r-2">
+                <span className="text-gray-600 font-medium">Role:</span>
+                <span className="font-bold ml-1">{dbUser?.role || "User"}</span>
+              </div>
+              <div className="px-2">
+                <span className="text-gray-600 font-medium">Name:</span>
+                <span className="font-bold ml-1">{dbUser?.name || "Guest"}</span>
+              </div>
             </div>
           </div>
-          <div className="">
-          <button><IoNotifications className="text-3xl" /></button>
+
+          {/* Notifications */}
+          <button>
+            <IoNotifications className="text-3xl" />
+          </button>
         </div>
-        </div>
-        
       </div>
     </div>
   );
