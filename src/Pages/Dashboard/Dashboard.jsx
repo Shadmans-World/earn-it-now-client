@@ -44,7 +44,18 @@ const Dashboard = () => {
                 
             )}
 
+            {
+                workers && (
+                    <>
+                    <li><NavLink to='/workerHome'> <FaHome className="text-2xl"/><span className="text-[1rem]">Home</span></NavLink></li>
+                    <li><NavLink to='/worker-task'> <FaTasks className="text-2xl"/><span className="text-[1rem]">Task List</span></NavLink></li>
+                    <li><NavLink to='/worker-submission'> <AiOutlineFileDone className="text-2xl"/><span className="text-[1rem]">My Submission</span></NavLink></li>
+                    <li><NavLink to='/worker-withdrawal'> <BiMoneyWithdraw  className="text-2xl"/><span className="text-[1rem]">My Withdrawals</span></NavLink></li>
+                    </>
+                )
+            }
 
+           
         </ul>
       </div>
 
