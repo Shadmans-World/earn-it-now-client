@@ -4,8 +4,9 @@ import useProvider from './useProvider';
 import useAxiosSecure from './useAxiosSecure';
 
 
+
 const useDbUser = () => {
-  const axiosSecure = useAxiosSecure()
+ const axiosSecure = useAxiosSecure()
   const { user } = useProvider(); // Get the currently logged-in user
 
   const { data: dbUsers = [], refetch } = useQuery({
