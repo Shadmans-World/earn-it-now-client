@@ -3,7 +3,7 @@ import { NavLink, Outlet } from "react-router-dom";
 
 import useAxiosSecure from "../../Hooks/useAxiosSecure";
 
-import { FaCoins, FaHome, FaTasks, FaUsers } from "react-icons/fa";
+import { FaCoins, FaHistory, FaHome, FaTasks, FaUsers } from "react-icons/fa";
 import useDbUser from "../../Hooks/useDbUser";
 import { AiOutlineFileDone } from "react-icons/ai";
 import { BiMoneyWithdraw } from "react-icons/bi";
@@ -107,6 +107,13 @@ const Dashboard = () => {
                   {" "}
                   <FaCoins className="text-2xl" />
                   <span className="text-[1rem]">Purchase Coin</span>
+                </NavLink>
+              </li>
+              <li>
+                <NavLink to="/dashboard/purchaseHistory">
+                  {" "}
+                  <FaHistory className="text-2xl" />
+                  <span className="text-[1rem]">Purchase History</span>
                 </NavLink>
               </li>
             </>

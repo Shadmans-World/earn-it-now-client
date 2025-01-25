@@ -1,6 +1,5 @@
 import React from "react";
 import { CardElement, useStripe, useElements } from "@stripe/react-stripe-js";
-import axios from "axios";
 import { useLocation, useNavigate } from "react-router-dom";
 import useAxiosPublic from "../../../Hooks/useAxiosPublic";
 import useDbUser from "../../../Hooks/useDbUser";
@@ -14,7 +13,8 @@ const CheckoutForm = () => {
   const { amount, coins } = location.state;
 
   const axiosPublic = useAxiosPublic();
-    const [dbUsers,currentUser,refetch] = useDbUser()
+  const [dbUsers, currentUser, refetch] = useDbUser();
+
   const handleSubmit = async (event) => {
     event.preventDefault();
 
@@ -54,14 +54,15 @@ const CheckoutForm = () => {
         amount,
         coins,
         userId: currentUser._id, // Replace with actual userId (can be from context or state)
+        email: currentUser.email, // Include the user's email
       };
 
       // Save payment info and update user's coin balance
       await axiosPublic.post("/save-payment", paymentInfo);
-
+      refetch();
       alert("Payment successful!");
-      refetch()
-      navigate("/dashboard");
+      
+      navigate("/dashboard/purchaseHistory");
     } catch (err) {
       console.error(err.message);
     }
