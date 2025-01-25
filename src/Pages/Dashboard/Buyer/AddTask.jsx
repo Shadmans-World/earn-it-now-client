@@ -36,7 +36,8 @@ const AddTask = () => {
         if (currentUser.role === "buyer") {
           const { taskImage, ...rest } = data;
           const email = currentUser.email;
-          const finalData = { ...rest, email };
+          const buyerName = currentUser.name;
+          const finalData = { ...rest, email ,buyerName};
           console.log("Form Data:", finalData);
           const totalPayableAmount =
             finalData.required_workers * finalData.payable_amount;

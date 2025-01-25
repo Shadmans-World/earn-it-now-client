@@ -13,6 +13,9 @@ import CheckoutForm from "../Pages/Dashboard/Purchase Coin/CheckOutForm";
 import AddTask from "../Pages/Dashboard/Buyer/AddTask";
 import MyTask from "../Pages/Dashboard/Buyer/MyTask";
 import PurchaseHistory from "../Pages/Dashboard/Purchase Coin/PurchaseHistory";
+import TaskListWorker from "../Pages/Dashboard/Worker/TaskListWorker";
+import TaskDetails from "../Pages/Dashboard/Worker/TaskDetails";
+import MySubmissions from "../Pages/Dashboard/Worker/MySubmissions";
 
 const stripePromise = loadStripe(`${import.meta.env.VITE_PAYMENT_GATEWAY_PK}`);
 
@@ -70,6 +73,17 @@ export const router = createBrowserRouter([
       {
         path:'/dashboard/purchaseHistory',
         element:<PurchaseHistory/>
+      },
+      {
+        path:'/dashboard/worker-task',
+        element:<TaskListWorker/>
+      },
+      {path:'/dashboard/taskDetails/:id',
+        element:<TaskDetails/>
+      },
+      {
+        path:'/dashboard/worker-submission',
+        element:<MySubmissions/>
       }
     ],
   },
