@@ -7,7 +7,7 @@ import { FaCoins } from "react-icons/fa";
 const Navbar = () => {
   const { user, logOut } = useProvider();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const [currentUser] = useDbUser()
+  const [dbUsers,currentUser] = useDbUser()
  
   const links = user ? (
     <>
