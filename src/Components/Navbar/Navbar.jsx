@@ -7,15 +7,15 @@ import { FaCoins } from "react-icons/fa";
 const Navbar = () => {
   const { user, logOut } = useProvider();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const [dbUser] = useDbUser()
-  console.log(dbUser.coin)
+  const [currentUser] = useDbUser()
+ 
   const links = user ? (
     <>
       <li>
         <NavLink to="/dashboard">Dashboard</NavLink>
       </li>
       <li>
-        <NavLink to="/available Coin"><FaCoins></FaCoins>{dbUser.coins}</NavLink>
+        <NavLink to="/dashboard/purchaseCoin"><FaCoins/>{currentUser.coins || 0}</NavLink>
       </li>
       <li>
         <NavLink to="https://github.com/Programming-Hero-Web-Course4/b10a12-client-side-Shadmans-World" target="_blank">
@@ -78,7 +78,7 @@ const Navbar = () => {
             </div>
             <ul
               tabIndex={0}
-              className="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow z-10"
+              className="menu menu-sm dropdown-content bg-base-100 rounded-box  mt-3 w-52 p-2 shadow z-10"
             >
               {links}
             </ul>

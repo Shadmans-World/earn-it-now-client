@@ -12,11 +12,11 @@ import { MdTask } from "react-icons/md";
 
 const Dashboard = () => {
   
-  const [dbUser] = useDbUser();
+  const [dbUsers,currentUser] = useDbUser();
 
-  const workers = dbUser.role === "worker";
-  const admin = dbUser.role === "admin";
-  const buyers = dbUser.role === 'buyer'
+  const workers = currentUser.role === "worker";
+  const admin = currentUser.role === "admin";
+  const buyers = currentUser.role === 'buyer'
  
 
   return (

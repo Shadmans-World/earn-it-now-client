@@ -3,7 +3,7 @@ import { IoNotifications } from "react-icons/io5";
 import useDbUser from "../../Hooks/useDbUser";
 
 const DashboardNavbar = () => {
-  const [dbUser] = useDbUser(); // Get the current user's data from the hook
+  const [dbUsers,currentUser] = useDbUser(); // Get the current user's data from the hook
 
   return (
     <div>
@@ -20,11 +20,11 @@ const DashboardNavbar = () => {
             <div className="flex gap-4 items-center mb-2">
               <div className="px-2 border-r-2">
                 <span className="text-gray-600 font-medium">Available Coin:</span>
-                <span className="text-primary font-bold ml-1">{dbUser?.coins || 0}</span>
+                <span className="text-primary font-bold ml-1">{currentUser?.coins || 0}</span>
               </div>
               <div className="px-2">
                 <img
-                  src={dbUser?.profilePhoto || "https://via.placeholder.com/150"}
+                  src={currentUser?.profilePhoto || "https://via.placeholder.com/150"}
                   alt="User Avatar"
                   className="w-10 h-10 rounded-full object-cover"
                 />
@@ -33,11 +33,11 @@ const DashboardNavbar = () => {
             <div className="flex gap-4 items-center">
               <div className="px-2 border-r-2">
                 <span className="text-gray-600 font-medium">Role:</span>
-                <span className="font-bold ml-1">{dbUser?.role || "User"}</span>
+                <span className="font-bold ml-1">{currentUser?.role || "User"}</span>
               </div>
               <div className="px-2">
                 <span className="text-gray-600 font-medium">Name:</span>
-                <span className="font-bold ml-1">{dbUser?.name || "Guest"}</span>
+                <span className="font-bold ml-1">{currentUser?.name || "Guest"}</span>
               </div>
             </div>
           </div>

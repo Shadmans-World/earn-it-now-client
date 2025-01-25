@@ -14,7 +14,7 @@ const CheckoutForm = () => {
   const { amount, coins } = location.state;
 
   const axiosPublic = useAxiosPublic();
-    const [dbUser] = useDbUser()
+    const [dbUsers,currentUser,refetch] = useDbUser()
   const handleSubmit = async (event) => {
     event.preventDefault();
 
@@ -53,13 +53,14 @@ const CheckoutForm = () => {
         transactionId: confirmPayment.paymentIntent.id,
         amount,
         coins,
-        userId: dbUser._id, // Replace with actual userId (can be from context or state)
+        userId: currentUser._id, // Replace with actual userId (can be from context or state)
       };
 
       // Save payment info and update user's coin balance
       await axiosPublic.post("/save-payment", paymentInfo);
 
       alert("Payment successful!");
+      refetch()
       navigate("/dashboard");
     } catch (err) {
       console.error(err.message);

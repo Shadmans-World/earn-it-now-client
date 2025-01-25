@@ -17,10 +17,10 @@ const useDbUser = () => {
     },
   });
 
-  // Filter the specific dbUser based on the logged-in user's email
-  const currentUser = dbUsers.find((dbUser) => dbUser.email === user?.email);
+  // Filter the specific currentUser based on the logged-in user's email
+  const currentUser = dbUsers.find((currentUser) => currentUser.email === user?.email);
 
-  return [currentUser || {}, refetch]; // Return the logged-in user's data
+  return [dbUsers,currentUser || {}, refetch]; // Return the logged-in user's data
 };
 
 export default useDbUser;
