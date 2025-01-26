@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import useProvider from "./useProvider";
 
 const axiosSecure = axios.create({
-  baseURL: "http://localhost:5000",
+  baseURL: "https://earn-it-now-server.vercel.app",
 });
 
 const useAxiosSecure = () => {

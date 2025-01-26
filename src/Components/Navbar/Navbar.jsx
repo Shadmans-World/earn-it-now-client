@@ -15,8 +15,27 @@ const Navbar = () => {
         <NavLink to="/dashboard">Dashboard</NavLink>
       </li>
       <li>
-        <NavLink to="/dashboard/purchaseCoin"><FaCoins/>{currentUser.coins || 0}</NavLink>
-      </li>
+  <NavLink
+    to="/dashboard/purchaseCoin"
+    className={({ isActive }) =>
+      `flex items-center ${
+        currentUser.role !== "buyer"
+          ? "pointer-events-none text-gray-400 cursor-not-allowed"
+          : isActive
+          ? "text-blue-500 font-bold"
+          : "text-black"
+      }`
+    }
+    onClick={(e) => {
+      if (currentUser.role !== "buyer") {
+        e.preventDefault(); // Prevent navigation if not a buyer
+      }
+    }}
+  >
+    <FaCoins className="mr-2" />
+    {currentUser.coins || 0}
+  </NavLink>
+</li>
       <li>
         <NavLink to="https://github.com/Programming-Hero-Web-Course4/b10a12-client-side-Shadmans-World" target="_blank">
           Join as Developer
@@ -46,7 +65,7 @@ const Navbar = () => {
   const handleLogout = () => {
     logOut()
       .then(() => {
-        console.log("Sign Out Successful");
+        // console.log("Sign Out Successful");
         setIsDropdownOpen(false);
       })
       .catch((error) => {
@@ -85,7 +104,7 @@ const Navbar = () => {
           </div>
          <div className="flex items-center">
          <img src="/income.png" alt="" className="w-10 rounded-3xl"/>
-         <a className="btn btn-ghost text-xl hidden md:flex">EIN</a>
+         <a href="/" className="btn btn-ghost text-xl hidden md:flex">EIN</a>
          </div>
 
         </div>

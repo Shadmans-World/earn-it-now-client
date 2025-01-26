@@ -38,7 +38,7 @@ const AddTask = () => {
           const email = currentUser.email;
           const buyerName = currentUser.name;
           const finalData = { ...rest, email ,buyerName};
-          console.log("Form Data:", finalData);
+          // console.log("Form Data:", finalData);
           const totalPayableAmount =
             finalData.required_workers * finalData.payable_amount;
 

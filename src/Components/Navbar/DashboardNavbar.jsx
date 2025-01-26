@@ -10,7 +10,8 @@ const DashboardNavbar = () => {
       <div className="navbar border-b-2 bg-base-100">
         {/* Navbar Start */}
         <div className="navbar-start hidden md:flex">
-          <a className="btn btn-ghost text-xl">Dashboard</a>
+        <img src="/income.png" alt="" className="w-10 rounded-3xl"/>
+          <a href="/" className="btn btn-ghost text-xl">EIN</a>
         </div>
 
         {/* Navbar End */}

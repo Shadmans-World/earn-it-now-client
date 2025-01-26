@@ -5,12 +5,14 @@ import useProvider from "../Hooks/useProvider";
 import { Link, useNavigate } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import useAxiosPublic from "../Hooks/useAxiosPublic";
+
 const Login = () => {
   const [animationData, setAnimationData] = useState(null);
-  const [error, setError] = useState('')
-  const { signInUser ,signWithGoogle} = useProvider();
-  const navigate = useNavigate()
-  const axiosPublic = useAxiosPublic()
+  const [error, setError] = useState("");
+  const { signInUser, signWithGoogle } = useProvider();
+  const navigate = useNavigate();
+  const axiosPublic = useAxiosPublic();
+
   useEffect(() => {
     const fetchAnimationData = async () => {
       try {
@@ -28,47 +30,39 @@ const Login = () => {
   const {
     register,
     handleSubmit,
-    watch,
     formState: { errors },
   } = useForm();
 
   const onSubmit = (data) => {
     signInUser(data.email, data.password)
-      .then((res) => {
-        console.log("Logged In User: ", res.user);
-       
-        setError("")
-        navigate('/dashboard')
+      .then(() => {
+        setError("");
+        navigate("/dashboard");
       })
       .catch((error) => {
-        console.error("Error when login", error.message);
-        setError(error.message)
+        console.error("Error when logging in:", error.message);
+        setError(error.message);
       });
   };
-
-  
 
   const handleGoogleSignIn = () => {
     signWithGoogle()
       .then((res) => {
         const user = res.user;
-  
-        // Default role as 'Worker' for Google sign-in users
+
         const defaultUserData = {
           name: user.displayName,
           email: user.email,
-          profilePhoto: user.photoURL, // Use photoURL provided by Google
+          profilePhoto: user.photoURL,
           role: "worker",
-          coins: 10, // Default coins for workers
+          coins: 10,
         };
-  
-        // Save user data to the database
+
         axiosPublic
           .post("/users", defaultUserData)
-          .then((dbRes) => {
-            console.log("User saved to database:", dbRes.data);
+          .then(() => {
             setError("");
-            navigate("/dashboard"); // Navigate after successful sign-in
+            navigate("/dashboard");
           })
           .catch((error) => {
             console.error("Error saving Google user to database:", error.message);
@@ -80,28 +74,35 @@ const Login = () => {
         setError(error.message);
       });
   };
-  
 
   return (
     <div>
-        <Helmet>
-            <title>Login || EIN</title>
-        </Helmet>
+      <Helmet>
+        <title>Login || EIN</title>
+      </Helmet>
       <div className="hero bg-base-200 min-h-screen">
-        <div className="hero-content flex-col lg:flex-row">
-          <div className="text-center lg:text-left">
+        <div className="hero-content flex flex-col-reverse lg:flex-row gap-y-6 lg:gap-x-10">
+          {/* Animation Section */}
+          <div className="flex justify-center items-center">
             {animationData && (
               <Lottie
                 animationData={animationData}
                 loop={true}
                 autoplay={true}
-                style={{ height: "400px", width: "400px" }}
+                style={{
+                  height: "300px",
+                  
+                  maxWidth: "100%",
+                }}
+                className="lg:h-[400px] lg:w-[400px]"
               />
             )}
           </div>
-          <div className="card bg-base-100 w-full max-w-sm shrink-0 shadow-2xl">
+
+          {/* Login Form */}
+          <div className="card bg-base-100 w-[270px] md:w-full shadow-2xl">
             <form onSubmit={handleSubmit(onSubmit)} className="card-body">
-              <h1 className="text-5xl font-bold mt-2 mb-3 text-center">
+              <h1 className="text-4xl lg:text-5xl font-bold mt-2 mb-3 text-center">
                 Login now!
               </h1>
               <div className="form-control">
@@ -112,12 +113,10 @@ const Login = () => {
                   type="email"
                   {...register("email", { required: "Email is required" })}
                   placeholder="email"
-                  className="input input-bordered"
+                  className="input input-bordered w-full"
                 />
                 {errors.email && (
-                  <span className="text-red-500 text-xs">
-                    {errors.email.message}
-                  </span>
+                  <span className="text-red-500 text-xs">{errors.email.message}</span>
                 )}
               </div>
               <div className="form-control">
@@ -126,23 +125,21 @@ const Login = () => {
                 </label>
                 <input
                   type="password"
-                  {...register("password", { required: 'Password Is required' })}
+                  {...register("password", { required: "Password is required" })}
                   placeholder="password"
-                  className="input input-bordered"
+                  className="input input-bordered w-full"
                 />
                 {errors.password && (
-                  <span className="text-red-500 text-xs">
-                    {errors.password.message}
-                  </span>
+                  <span className="text-red-500 text-xs">{errors.password.message}</span>
                 )}
               </div>
               <div className="form-control mt-6">
-                <button className="btn btn-primary">Login</button>
+                <button className="btn btn-primary w-full">Login</button>
               </div>
-              <p className="text-sm mt-2">
-                New to this website? Create An Account{" "}
-                <Link to="/register" className="text-red-600">
-                  Register 
+              <p className="text-sm mt-2 text-center">
+                New to this website?{" "}
+                <Link to="/register" className="text-red-600 font-semibold">
+                  Register
                 </Link>
               </p>
             </form>
@@ -153,13 +150,11 @@ const Login = () => {
               >
                 Sign In With Google
               </button>
-              
             </div>
             {error && (
-                <span className="text-red-500 text-center mb-3">{error}</span>
-              )}
+              <span className="text-red-500 text-center mb-3">{error}</span>
+            )}
           </div>
-         
         </div>
       </div>
     </div>

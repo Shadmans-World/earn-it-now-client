@@ -16,9 +16,9 @@ const Register = () => {
   } = useForm();
   const { createUser, signWithGoogle } = useProvider();
   const navigate = useNavigate();
-  const image_hosting_api = `https://api.imgbb.com/1/upload?key=${import.meta.env.VITE_IMAGE_HOSTING_KEY}`
+  const image_hosting_api = `https://api.imgbb.com/1/upload?key=${import.meta.env.VITE_IMAGE_HOSTING_KEY}`;
   const [animationData, setAnimationData] = useState(null);
-  const [error, setError] = useState(""); // Moved inside the Register component
+  const [error, setError] = useState("");
   const axiosPublic = useAxiosPublic();
 
   useEffect(() => {
@@ -37,28 +37,27 @@ const Register = () => {
 
   const onSubmit = async (data) => {
     const formData = new FormData();
-    const file = data.profilePhoto[0]; // Access the uploaded file
+    const file = data.profilePhoto[0];
     formData.append("image", file);
-  
+
     try {
       const response = await fetch(image_hosting_api, {
         method: "POST",
         body: formData,
       });
       const result = await response.json();
-  
+
       if (result.success) {
-        const imageUrl = result.data.url; // Get the uploaded image URL
-  
-        // Add default coins based on role
+        const imageUrl = result.data.url;
+
         const defaultCoins = data.role === "worker" ? 10 : 50;
-  
+
         const updatedData = {
           ...data,
           profilePhoto: imageUrl,
-          coins: defaultCoins, // Add default coins to the user data
+          coins: defaultCoins,
         };
-  
+
         createUser(updatedData.email, updatedData.password)
           .then(() => {
             updateProfile(auth.currentUser, {
@@ -66,37 +65,30 @@ const Register = () => {
               photoURL: updatedData.profilePhoto,
             })
               .then(() => {
-                console.log("Profile Updated");
-  
-                // Save user to database with default coins
                 axiosPublic
                   .post("/users", updatedData)
-                  .then((res) => {
-                    console.log(res.data);
-                  })
-                  .catch((error) => {
-                    console.error("Sign Up details in db", error.message);
-                  });
-  
+                  .then(() => {})
+                  .catch((error) => console.error("DB Save Error:", error));
+
                 setError("");
                 navigate("/");
               })
               .catch((error) => {
                 setError(error.message);
-                console.error("Error updating profile:", error.message);
+                console.error("Profile Update Error:", error);
               });
           })
           .catch((error) => {
-            console.error("Error in sign-up:", error.message);
             setError(error.message);
+            console.error("Sign-Up Error:", error);
           });
       } else {
         setError(result.error.message);
-        console.error("Image upload failed:", result.error.message);
+        console.error("Image Upload Failed:", result.error.message);
       }
     } catch (error) {
       setError(error.message);
-      console.error("Error uploading image:", error.message);
+      console.error("Image Upload Error:", error);
     }
   };
 
@@ -105,30 +97,27 @@ const Register = () => {
       .then((res) => {
         const user = res.user;
 
-        // Default role as 'Worker' for Google sign-in users
         const defaultUserData = {
           name: user.displayName,
           email: user.email,
-          profilePhoto: user.photoURL, // Use photoURL provided by Google
+          profilePhoto: user.photoURL,
           role: "worker",
-          coins: 10, // Default coins for workers
+          coins: 10,
         };
 
-        // Save user data to the database
         axiosPublic
           .post("/users", defaultUserData)
-          .then((dbRes) => {
-            console.log("User saved to database:", dbRes.data);
+          .then(() => {
             setError("");
-            navigate("/dashboard"); // Navigate after successful sign-in
+            navigate("/dashboard");
           })
           .catch((error) => {
-            console.error("Error saving Google user to database:", error.message);
+            console.error("Google DB Save Error:", error.message);
             setError("");
           });
       })
       .catch((error) => {
-        console.error("Google sign-in error:", error.message);
+        console.error("Google Sign-In Error:", error.message);
         setError(error.message);
       });
   };
@@ -138,27 +127,26 @@ const Register = () => {
       <Helmet>
         <title>Register || EIN</title>
       </Helmet>
-      <div className="hero bg-base-200 min-h-screen">
-        <div className="hero-content flex-col lg:flex-row-reverse">
+      <div className="hero bg-base-200 min-h-screen px-4 sm:px-8 lg:px-20">
+        <div className="hero-content flex flex-col-reverse lg:flex-row-reverse items-center lg:justify-between gap-8">
           {/* Lottie Animation */}
-          <div className="text-center lg:ml-10 lg:text-left">
+          <div className="w-full lg:w-1/2 flex justify-center">
             {animationData && (
               <Lottie
                 animationData={animationData}
                 loop={true}
                 autoplay={true}
-                style={{ height: "300px", width: "300px" }}
+                className="w-64 h-64 sm:w-80 sm:h-80 lg:w-full lg:h-auto"
               />
             )}
           </div>
 
           {/* Registration Form */}
-          <div className="card bg-base-100 w-full max-w-sm shrink-0 shadow-2xl">
+          <div className="card bg-base-100 w-[270px] md:w-[500px] p-6 shadow-2xl">
             <form onSubmit={handleSubmit(onSubmit)} className="card-body">
-              <h1 className="text-5xl font-bold mt-2 mb-3 text-center">
-                Register now!
+              <h1 className="text-4xl font-bold text-center mb-4">
+                Register Now!
               </h1>
-              {/* Name */}
               <div className="form-control">
                 <label className="label">
                   <span className="label-text">Name</span>
@@ -170,13 +158,10 @@ const Register = () => {
                   className="input input-bordered"
                 />
                 {errors.name && (
-                  <span className="text-red-500 text-xs">
-                    {errors.name.message}
-                  </span>
+                  <span className="text-red-500 text-xs">{errors.name.message}</span>
                 )}
               </div>
 
-              {/* Email */}
               <div className="form-control">
                 <label className="label">
                   <span className="label-text">Email</span>
@@ -194,14 +179,11 @@ const Register = () => {
                   className="input input-bordered"
                 />
                 {errors.email && (
-                  <span className="text-red-500 text-xs">
-                    {errors.email.message}
-                  </span>
+                  <span className="text-red-500 text-xs">{errors.email.message}</span>
                 )}
               </div>
 
-             {/* Profile Photo */}
-             <div className="form-control">
+              <div className="form-control">
                 <label className="label">
                   <span className="label-text">Profile Photo</span>
                 </label>
@@ -210,7 +192,7 @@ const Register = () => {
                   {...register("profilePhoto", {
                     required: "Profile photo is required.",
                   })}
-                  className="file-input file-input-bordered w-full max-w-xs"
+                  className="file-input file-input-bordered w-full"
                 />
                 {errors.profilePhoto && (
                   <span className="text-red-500 text-xs">
@@ -219,14 +201,13 @@ const Register = () => {
                 )}
               </div>
 
-              {/* Role */}
               <div className="form-control">
                 <label className="label">
                   <span className="label-text">Role</span>
                 </label>
                 <select
                   {...register("role", { required: "Role is required" })}
-                  className="select select-bordered w-full max-w-xs"
+                  className="select select-bordered"
                   defaultValue=""
                 >
                   <option value="" disabled>
@@ -236,13 +217,10 @@ const Register = () => {
                   <option value="buyer">Buyer</option>
                 </select>
                 {errors.role && (
-                  <p className="text-red-500 text-sm mt-2">
-                    {errors.role.message}
-                  </p>
+                  <p className="text-red-500 text-xs">{errors.role.message}</p>
                 )}
               </div>
 
-              {/* Password */}
               <div className="form-control">
                 <label className="label">
                   <span className="label-text">Password</span>
@@ -255,14 +233,10 @@ const Register = () => {
                       value: 6,
                       message: "Password must be at least 6 characters.",
                     },
-                    maxLength: {
-                      value: 20,
-                      message: "Password must be less than 20 characters.",
-                    },
                     pattern: {
                       value: /(?=.*[A-Z])(?=.*[!@#$&*])(?=.*[0-9])(?=.*[a-z])/,
                       message:
-                        "Password must have at least one uppercase letter, one lowercase letter, one digit, and one special character.",
+                        "Password must have uppercase, lowercase, number, and special character.",
                     },
                   })}
                   placeholder="Password"
@@ -280,23 +254,20 @@ const Register = () => {
                   Register
                 </button>
               </div>
-              <p className="text-sm mt-2">
+              <p className="text-sm text-center mt-3">
                 Already have an account?{" "}
-                <Link to="/login" className="text-red-600">
+                <Link to="/login" className="text-blue-600">
                   Login
                 </Link>
               </p>
             </form>
-            <div className="flex justify-center w-full px-8 mb-5">
-              <button
-                onClick={handleGoogleSignIn}
-                className="btn btn-primary w-full"
-              >
-                Sign In With Google
+            <div className="w-full flex justify-center mt-4">
+              <button onClick={handleGoogleSignIn} className="btn btn-outline w-full">
+                Sign In with Google
               </button>
             </div>
             {error && (
-              <span className="text-red-500 text-center mb-3">{error}</span>
+              <p className="text-red-500 text-center mt-3">{error}</p>
             )}
           </div>
         </div>
