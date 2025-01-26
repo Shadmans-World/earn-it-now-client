@@ -9,12 +9,12 @@ const DashboardNavbar = () => {
     <div>
       <div className="navbar border-b-2 bg-base-100">
         {/* Navbar Start */}
-        <div className="navbar-start">
+        <div className="navbar-start hidden md:flex">
           <a className="btn btn-ghost text-xl">Dashboard</a>
         </div>
 
         {/* Navbar End */}
-        <div className="navbar-end flex gap-4 items-center">
+        <div className="navbar-start md:navbar-end flex gap-4 items-center">
           {/* User Data */}
           <div className="flex flex-col items-start">
             <div className="flex gap-4 items-center mb-2">

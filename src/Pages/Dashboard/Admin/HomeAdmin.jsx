@@ -68,34 +68,34 @@ const HomeAdmin = () => {
       <div>
         {pendingWithdrawals.length > 0 ? (
           <div className="overflow-x-auto">
-            <table className="table">
+            <table className="table-auto w-full border-collapse border border-gray-300">
               <thead>
                 <tr>
-                  <th>#</th>
-                  <th>Worker Name</th>
-                  <th>Worker Email</th>
-                  <th>Withdrawal Coin</th>
-                  <th>Withdrawal Amount</th>
-                  <th>Account Number</th>
-                  <th>Payment System</th>
-                  <th>Withdrawal Status</th>
-                  <th>Withdrawal Action</th>
+                  <th className="border px-4 py-2">#</th>
+                  <th className="border px-4 py-2">Worker Name</th>
+                  <th className="border px-4 py-2">Worker Email</th>
+                  <th className="border px-4 py-2">Withdrawal Coin</th>
+                  <th className="border px-4 py-2">Withdrawal Amount</th>
+                  <th className="border px-4 py-2">Account Number</th>
+                  <th className="border px-4 py-2">Payment System</th>
+                  <th className="border px-4 py-2">Withdrawal Status</th>
+                  <th className="border px-4 py-2">Withdrawal Action</th>
                 </tr>
               </thead>
               <tbody>
                 {pendingWithdrawals.map((withdraw, idx) => (
-                  <tr key={withdraw._id}>
-                    <th>{idx + 1}</th>
-                    <td>{withdraw.worker_name}</td>
-                    <td>{withdraw.worker_email}</td>
-                    <td>{withdraw.withdrawal_coin}</td>
-                    <td>{withdraw.withdrawal_amount}</td>
-                    <td>{withdraw.account_number}</td>
-                    <td>{withdraw.payment_system}</td>
-                    <td>{withdraw.status}</td>
-                    <td>
+                  <tr key={withdraw._id} className="hover:bg-gray-100">
+                    <td className="border px-4 py-2 text-center">{idx + 1}</td>
+                    <td className="border px-4 py-2">{withdraw.worker_name}</td>
+                    <td className="border px-4 py-2">{withdraw.worker_email}</td>
+                    <td className="border px-4 py-2">{withdraw.withdrawal_coin}</td>
+                    <td className="border px-4 py-2">{withdraw.withdrawal_amount}</td>
+                    <td className="border px-4 py-2">{withdraw.account_number}</td>
+                    <td className="border px-4 py-2">{withdraw.payment_system}</td>
+                    <td className="border px-4 py-2 capitalize">{withdraw.status}</td>
+                    <td className="border px-4 py-2 text-center">
                       <button
-                        className="btn btn-primary"
+                        className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded"
                         onClick={() => handleSuccess(withdraw._id)}
                       >
                         Payment Success

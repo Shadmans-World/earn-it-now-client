@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react';
-import useAxiosSecure from '../../../Hooks/useAxiosSecure'; // Custom Axios hook
-import useDbUser from '../../../Hooks/useDbUser';
+import React, { useEffect, useState } from "react";
+import useAxiosSecure from "../../../Hooks/useAxiosSecure"; // Custom Axios hook
+import useDbUser from "../../../Hooks/useDbUser";
 
 const MySubmissions = () => {
     const [, currentUser] = useDbUser();
@@ -16,12 +16,14 @@ const MySubmissions = () => {
     useEffect(() => {
         const fetchSubmissions = async () => {
             try {
-                const response = await axiosSecure.get(`/submissions?worker_email=${workerEmail}`);
+                const response = await axiosSecure.get(
+                    `/submissions?worker_email=${workerEmail}`
+                );
                 setSubmissions(response.data);
                 setLoading(false);
             } catch (err) {
-                console.error('Error fetching submissions:', err);
-                setError('Failed to load submissions');
+                console.error("Error fetching submissions:", err);
+                setError("Failed to load submissions");
                 setLoading(false);
             }
         };
@@ -58,38 +60,55 @@ const MySubmissions = () => {
                 <p>No submissions found.</p>
             ) : (
                 <div>
-                    <table className="table-auto w-full border-collapse border border-gray-300 mb-4">
-                        <thead>
-                            <tr>
-                                <th className="border px-4 py-2">Task Title</th>
-                                <th className="border px-4 py-2">Payable Amount</th>
-                                <th className="border px-4 py-2">Submission Details</th>
-                                <th className="border px-4 py-2">Status</th>
-                                <th className="border px-4 py-2">Submission Date</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {currentSubmissions.map((submission) => (
-                                <tr key={submission._id}>
-                                    <td className="border px-4 py-2">{submission.task_title}</td>
-                                    <td className="border px-4 py-2">${submission.payable_amount}</td>
-                                    <td className="border px-4 py-2">{submission.submission_details}</td>
-                                    <td
-                                        className={`border px-4 py-2 ${
-                                            submission.status === 'pending'
-                                                ? 'bg-yellow-200'
-                                                : submission.status === 'approved'
-                                                ? 'bg-green-200'
-                                                : 'bg-red-200'
-                                        }`}
-                                    >
-                                        {submission.status}
-                                    </td>
-                                    <td className="border px-4 py-2">{new Date(submission.current_date).toLocaleString()}</td>
+                    {/* Responsive Table Wrapper */}
+                    <div className="overflow-x-auto">
+                        <table className="table-auto w-full border-collapse border border-gray-300 mb-4">
+                            <thead>
+                                <tr>
+                                    <th className="border px-4 py-2 text-left">Task Title</th>
+                                    <th className="border px-4 py-2 text-left">Payable Amount</th>
+                                    <th className="border px-4 py-2 text-left">
+                                        Submission Details
+                                    </th>
+                                    <th className="border px-4 py-2 text-left">Status</th>
+                                    <th className="border px-4 py-2 text-left">
+                                        Submission Date
+                                    </th>
                                 </tr>
-                            ))}
-                        </tbody>
-                    </table>
+                            </thead>
+                            <tbody>
+                                {currentSubmissions.map((submission) => (
+                                    <tr key={submission._id} className="hover:bg-gray-100">
+                                        <td className="border px-4 py-2">
+                                            {submission.task_title}
+                                        </td>
+                                        <td className="border px-4 py-2">
+                                            ${submission.payable_amount}
+                                        </td>
+                                        <td className="border px-4 py-2">
+                                            {submission.submission_details}
+                                        </td>
+                                        <td
+                                            className={`border px-4 py-2 capitalize ${
+                                                submission.status === "pending"
+                                                    ? "bg-yellow-200"
+                                                    : submission.status === "approved"
+                                                    ? "bg-green-200"
+                                                    : "bg-red-200"
+                                            }`}
+                                        >
+                                            {submission.status}
+                                        </td>
+                                        <td className="border px-4 py-2">
+                                            {new Date(
+                                                submission.current_date
+                                            ).toLocaleString()}
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
 
                     {/* Pagination Controls */}
                     <div className="flex justify-center space-x-2">
@@ -97,7 +116,9 @@ const MySubmissions = () => {
                             <button
                                 key={index + 1}
                                 className={`px-3 py-1 border rounded ${
-                                    currentPage === index + 1 ? 'bg-blue-500 text-white' : 'bg-gray-100'
+                                    currentPage === index + 1
+                                        ? "bg-blue-500 text-white"
+                                        : "bg-gray-100"
                                 }`}
                                 onClick={() => handlePageChange(index + 1)}
                             >

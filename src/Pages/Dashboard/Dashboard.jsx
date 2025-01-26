@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { NavLink, Outlet } from "react-router-dom";
+import { NavLink, Outlet, useLocation } from "react-router-dom";
 
 import useAxiosSecure from "../../Hooks/useAxiosSecure";
 
@@ -8,6 +8,7 @@ import useDbUser from "../../Hooks/useDbUser";
 import { AiOutlineFileDone } from "react-icons/ai";
 import { BiMoneyWithdraw } from "react-icons/bi";
 import { MdTask } from "react-icons/md";
+import Footer from "../../Components/Footer/Footer"
 // import useAxiosPublic from "../../Hooks/useAxiosPublic";
 
 const Dashboard = () => {
@@ -17,11 +18,12 @@ const Dashboard = () => {
   const workers = currentUser.role === "worker";
   const admin = currentUser.role === "admin";
   const buyers = currentUser.role === 'buyer'
+ const location = useLocation()
  
 
   return (
-    <div className="flex">
-      <div className="w-64 min-h-[calc(100vh-86.6px)] bg-orange-400">
+    <div className="flex flex-col md:flex-row">
+      <div className="w-full md:w-64 md:min-h-[calc(100vh-86.6px)] bg-orange-400">
         <ul className="menu space-y-4 p-4">
           {admin && (
             <>
@@ -123,9 +125,22 @@ const Dashboard = () => {
 
       {/* MAin Dashboard Content */}
       <div className="w-full">
-        <Outlet />
-        {/* <Footer/> */}
+        {
+          location.pathname === '/dashboard' ? <>
+          <div className="flex justify-center mt-10 min-h-[calc(100vh-335.6px)]">
+          <h2 className="text-2xl "><span className="text-yellow-500">Welcome</span> {currentUser.name}!</h2>
+          </div>
+          </> : <>
+          <div className="min-h-[calc(100vh-294.6px)]">
+          <Outlet />
+          </div>
+          
+          </>
+        }
+        <Footer/>
+        
       </div>
+
     </div>
   );
 };

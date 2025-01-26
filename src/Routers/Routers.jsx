@@ -22,6 +22,7 @@ import Withdrawal from "../Pages/Dashboard/Worker/Withdrawal";
 import HomeAdmin from "../Pages/Dashboard/Admin/HomeAdmin";
 import ManageAdmin from "../Pages/Dashboard/Admin/manageAdmin";
 import ManageTasks from "../Pages/Dashboard/Admin/ManageTasks";
+import PrivateRoute from "./PrivateRoute";
 
 const stripePromise = loadStripe(`${import.meta.env.VITE_PAYMENT_GATEWAY_PK}`);
 
@@ -50,7 +51,9 @@ export const router = createBrowserRouter([
   {
     path: "/dashboard",
     errorElement: <ErrorPage />,
-    element: <DashBoardLayout />,
+    element: <PrivateRoute>
+      <DashBoardLayout />
+    </PrivateRoute>,
     children: [
       {
         path: "/dashboard/purchaseCoin",

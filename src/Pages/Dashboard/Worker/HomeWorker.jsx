@@ -1,13 +1,12 @@
 import React from "react";
 import useWorkerPending from "../../../Hooks/useWorkerPending";
 
-
 const HomeWorker = () => {
-  const [workerPending, refetch] = useWorkerPending();
+  const [workerPending] = useWorkerPending();
 
   // Filter pending tasks and approved submissions
-  const pendingSubmission = workerPending.filter(pending => pending.status === 'pending');
-  const approvedSubmissions = workerPending.filter(approved => approved.status === 'approved');
+  const pendingSubmission = workerPending.filter(pending => pending.status === "pending");
+  const approvedSubmissions = workerPending.filter(approved => approved.status === "approved");
 
   // Calculate total earnings
   const totalEarning = approvedSubmissions.reduce(
@@ -36,33 +35,35 @@ const HomeWorker = () => {
       {/* Approved Submissions Section */}
       <div className="my-10">
         <h2 className="text-2xl text-center font-bold mb-5">Approved Submissions</h2>
-        <table className="w-full border-collapse border border-gray-300">
-          <thead>
-            <tr className="bg-gray-100">
-              <th className="border border-gray-300 p-2">Task Title</th>
-              <th className="border border-gray-300 p-2">Payable Amount</th>
-              <th className="border border-gray-300 p-2">Buyer Name</th>
-              <th className="border border-gray-300 p-2">Status</th>
-            </tr>
-          </thead>
-          <tbody>
-            {approvedSubmissions.map((submission, index) => (
-              <tr key={index} className="text-center">
-                <td className="border border-gray-300 p-2">{submission.task_title}</td>
-                <td className="border border-gray-300 p-2">${submission.payable_amount}</td>
-                <td className="border border-gray-300 p-2">{submission.buyer_name}</td>
-                <td className="border border-gray-300 p-2">{submission.status}</td>
+        <div className="overflow-x-auto">
+          <table className="table-auto w-full border-collapse border border-gray-300">
+            <thead>
+              <tr className="bg-gray-100">
+                <th className="border border-gray-300 p-2 text-left">Task Title</th>
+                <th className="border border-gray-300 p-2 text-left">Payable Amount</th>
+                <th className="border border-gray-300 p-2 text-left">Buyer Name</th>
+                <th className="border border-gray-300 p-2 text-left">Status</th>
               </tr>
-            ))}
-            {approvedSubmissions.length === 0 && (
-              <tr>
-                <td colSpan="4" className="text-center p-3">
-                  No approved submissions found.
-                </td>
-              </tr>
-            )}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {approvedSubmissions.map((submission, index) => (
+                <tr key={index} className="hover:bg-gray-100">
+                  <td className="border border-gray-300 p-2">{submission.task_title}</td>
+                  <td className="border border-gray-300 p-2">${submission.payable_amount}</td>
+                  <td className="border border-gray-300 p-2">{submission.buyer_name}</td>
+                  <td className="border border-gray-300 p-2 capitalize">{submission.status}</td>
+                </tr>
+              ))}
+              {approvedSubmissions.length === 0 && (
+                <tr>
+                  <td colSpan="4" className="text-center p-3">
+                    No approved submissions found.
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   );

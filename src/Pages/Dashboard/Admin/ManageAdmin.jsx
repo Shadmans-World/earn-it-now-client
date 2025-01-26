@@ -25,8 +25,7 @@ const ManageAdmin = () => {
   };
 
   // Handle deleting a user with confirmation
-const handleDelete = async (userId) => {
-    // Show SweetAlert confirmation dialog
+  const handleDelete = async (userId) => {
     const result = await Swal.fire({
       title: "Are you sure?",
       text: "You won't be able to revert this!",
@@ -34,74 +33,67 @@ const handleDelete = async (userId) => {
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
-      confirmButtonText: "Yes, delete it!"
+      confirmButtonText: "Yes, delete it!",
     });
-  
-    // If the user confirms deletion
+
     if (result.isConfirmed) {
       try {
-        // Make API call to delete the user
         await axiosSecure.delete(`/users/${userId}`);
-        
-        // Show success alert
         Swal.fire({
           title: "Deleted!",
           text: "The user has been deleted.",
-          icon: "success"
+          icon: "success",
         });
-        
-        refetch(); // Re-fetch users after deletion
+        refetch();
       } catch (error) {
-        // Show failure alert if deletion fails
         Swal.fire({
           title: "Error!",
           text: "Failed to delete user.",
-          icon: "error"
+          icon: "error",
         });
       }
     }
   };
-  
 
   // Handle updating the user role
   const handleRoleChange = async (userId, newRole) => {
     try {
-      const response = await axiosSecure.patch(`/users/${userId}`, { role: newRole }); // API call to update role
+      const response = await axiosSecure.patch(`/users/${userId}`, { role: newRole });
       if (response.status === 200) {
-        alert('User role updated');
-        refetch(); // Re-fetch users after role update
+        alert("User role updated");
+        refetch();
       } else {
-        alert('Failed to update user role');
+        alert("Failed to update user role");
       }
     } catch (error) {
-      alert('Error updating role');
+      alert("Error updating role");
     }
   };
 
   return (
-    <div>
+    <div className="p-3">
       <div className="overflow-x-auto">
-        <table className="table">
+        <table className="table-auto w-full border-collapse border border-gray-300">
           {/* head */}
-          <thead>
+          <thead className="bg-gray-100">
             <tr>
-              <th>#</th>
-              <th>Name</th>
-              <th>Email</th>
-              <th>Photo</th>
-              <th>Role</th>
-              <th>Coin</th>
-              <th>Delete User</th>
-              <th>Update Role</th>
+              <th className="border px-4 py-2">#</th>
+              <th className="border px-4 py-2">Name</th>
+              <th className="border px-4 py-2">Email</th>
+              <th className="border px-4 py-2">Photo</th>
+              <th className="border px-4 py-2">Role</th>
+              <th className="border px-4 py-2">Coin</th>
+              <th className="border px-4 py-2">Delete User</th>
+              <th className="border px-4 py-2">Update Role</th>
             </tr>
           </thead>
           <tbody>
             {dbUsers.map((user, idx) => (
-              <tr key={user._id}>
-                <th>{idx + 1}</th>
-                <td>{user.name}</td>
-                <td>{user.email}</td>
-                <td>
+              <tr key={user._id} className="hover:bg-gray-100">
+                <td className="border px-4 py-2 text-center">{idx + 1}</td>
+                <td className="border px-4 py-2">{user.name}</td>
+                <td className="border px-4 py-2">{user.email}</td>
+                <td className="border px-4 py-2">
                   {truncateLink(user.profilePhoto)}{" "}
                   {user.profilePhoto.length > 10 && (
                     <button
@@ -112,20 +104,21 @@ const handleDelete = async (userId) => {
                     </button>
                   )}
                 </td>
-                <td className="uppercase">{user.role}</td>
-                <td>{user?.coins || 0}</td>
-                <td>
+                <td className="border px-4 py-2 uppercase">{user.role}</td>
+                <td className="border px-4 py-2">{user?.coins || 0}</td>
+                <td className="border px-4 py-2 text-center">
                   <button
                     className="text-red-500 btn"
-                    onClick={() => handleDelete(user._id)} // Delete user
+                    onClick={() => handleDelete(user._id)}
                   >
                     <FaTrash />
                   </button>
                 </td>
-                <td>
+                <td className="border px-4 py-2 text-center">
                   <select
+                    className="border p-1 rounded"
                     defaultValue={user.role}
-                    onChange={(e) => handleRoleChange(user._id, e.target.value)} // Update role
+                    onChange={(e) => handleRoleChange(user._id, e.target.value)}
                   >
                     <option value="admin">Admin</option>
                     <option value="worker">Worker</option>
@@ -141,7 +134,7 @@ const handleDelete = async (userId) => {
       {/* Modal */}
       {isModalOpen && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
-          <div className="bg-white p-5 rounded-md w-1/3">
+          <div className="bg-white p-5 rounded-md max-w-md w-full">
             <h2 className="text-xl font-semibold mb-4">Full Profile Photo URL</h2>
             <p className="text-gray-700 break-words">{modalContent}</p>
             <div className="mt-5 flex justify-end">
