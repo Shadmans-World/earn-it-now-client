@@ -16,6 +16,7 @@ import PurchaseHistory from "../Pages/Dashboard/Purchase Coin/PurchaseHistory";
 import TaskListWorker from "../Pages/Dashboard/Worker/TaskListWorker";
 import TaskDetails from "../Pages/Dashboard/Worker/TaskDetails";
 import MySubmissions from "../Pages/Dashboard/Worker/MySubmissions";
+import HomeBuyer from "../Pages/Dashboard/Buyer/HomeBuyer";
 
 const stripePromise = loadStripe(`${import.meta.env.VITE_PAYMENT_GATEWAY_PK}`);
 
@@ -84,6 +85,10 @@ export const router = createBrowserRouter([
       {
         path:'/dashboard/worker-submission',
         element:<MySubmissions/>
+      },
+      {
+        path:'/dashboard/buyerHome',
+        element:<HomeBuyer/>
       }
     ],
   },

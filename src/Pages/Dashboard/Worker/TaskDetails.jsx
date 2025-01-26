@@ -105,6 +105,7 @@ const TaskDetails = () => {
             rows="4"
             className="w-full p-2 border rounded-md"
             placeholder="Enter your submission details..."
+            required
           />
           <button type="submit" className="btn btn-primary mt-4">Submit Task</button>
         </form>
