@@ -32,13 +32,13 @@ const Dashboard = () => {
                 </NavLink>
               </li>
               <li>
-                <NavLink to="/dashboard/manage-user">
+                <NavLink to="/dashboard/admin/manage-user">
                   <FaUsers className="text-2xl" />{" "}
                   <span className="text-[1rem]">Manage User</span>
                 </NavLink>
               </li>
               <li>
-                <NavLink to="/dashboard/manage-task">
+                <NavLink to="/dashboard/admin/manage-task">
                   <FaTasks className="text-2xl" />{" "}
                   <span className="text-[1rem]">Manage Task</span>
                 </NavLink>

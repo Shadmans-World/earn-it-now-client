@@ -1,10 +1,10 @@
 import { useQuery } from '@tanstack/react-query';
 
 import useAxiosPublic from './useAxiosPublic';
-import useDbUser from './useDbUser';
+
 
 const useTasks = () => {
-    const [dbUsers] = useDbUser()
+    
     const axiosPublic = useAxiosPublic()
     const {data: tasks=[], refetch} = useQuery({
         queryKey:['tasks'],
