@@ -18,6 +18,7 @@ import TaskDetails from "../Pages/Dashboard/Worker/TaskDetails";
 import MySubmissions from "../Pages/Dashboard/Worker/MySubmissions";
 import HomeBuyer from "../Pages/Dashboard/Buyer/HomeBuyer";
 import HomeWorker from "../Pages/Dashboard/Worker/HomeWorker";
+import Withdrawal from "../Pages/Dashboard/Worker/Withdrawal";
 
 const stripePromise = loadStripe(`${import.meta.env.VITE_PAYMENT_GATEWAY_PK}`);
 
@@ -94,6 +95,10 @@ export const router = createBrowserRouter([
       {
         path:'/dashboard/workerHome',
         element:<HomeWorker/>
+      },
+      {
+        path:'/dashboard/worker-withdrawal',
+        element:<Withdrawal/>
       }
     ],
   },
