@@ -20,6 +20,7 @@ import HomeBuyer from "../Pages/Dashboard/Buyer/HomeBuyer";
 import HomeWorker from "../Pages/Dashboard/Worker/HomeWorker";
 import Withdrawal from "../Pages/Dashboard/Worker/Withdrawal";
 import HomeAdmin from "../Pages/Dashboard/Admin/HomeAdmin";
+import ManageAdmin from "../Pages/Dashboard/Admin/manageAdmin";
 
 const stripePromise = loadStripe(`${import.meta.env.VITE_PAYMENT_GATEWAY_PK}`);
 
@@ -104,6 +105,10 @@ export const router = createBrowserRouter([
       {
         path:'/dashboard/adminHome',
         element:<HomeAdmin/>
+      },
+      {
+        path:'/dashboard/manage-user',
+        element:<ManageAdmin/>
       }
     ],
   },
