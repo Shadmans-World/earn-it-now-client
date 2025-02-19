@@ -9,7 +9,7 @@ import BlogResourcesSection from '../../Components/BlogResourcesSection';
 
 const Home = () => {
     return (
-        <div className='my-5'>
+        <div className=''>
             <Helmet>
                 <title>Home || EIN</title>
             </Helmet>
