@@ -1,19 +1,22 @@
-import React from 'react';
-import useDbUser from './useDbUser';
-import { useQuery } from '@tanstack/react-query';
-import useAxiosSecure from './useAxiosSecure';
+import { useQuery } from "@tanstack/react-query";
+import useDbUser from "./useDbUser";
+import useAxiosSecure from "./useAxiosSecure";
 
 const useWorkerPending = () => {
-    const [,currentUser] = useDbUser()
-    const axiosSecure = useAxiosSecure()
-    const {data: workerPending = [],refetch} = useQuery({
-        queryKey:[currentUser?.email, 'workerPending'],
-        queryFn:async()=>{
-            const res = await axiosSecure.get(`/worker/submission?email=${currentUser.email}`)
+    const [, currentUser] = useDbUser();
+    const axiosSecure = useAxiosSecure();
+
+    const { data: workerPending = [], isLoading, refetch } = useQuery({
+        queryKey: [currentUser?.email, "workerPending"],
+        queryFn: async () => {
+            if (!currentUser?.email) return [];
+            const res = await axiosSecure.get(`/worker/submission?email=${currentUser.email}`);
             return res.data;
-        }
-    })
-    return [workerPending, refetch]
+        },
+        enabled: !!currentUser?.email, // Only fetch when email exists
+    });
+
+    return [workerPending, isLoading, refetch];
 };
 
 export default useWorkerPending;
