@@ -53,12 +53,16 @@ const Register = () => {
         const defaultCoins = data.role === "worker" ? 10 : 50;
 
         const updatedData = {
-          ...data,
+          name: data.name,
+          email: data.email,
+          phone: data.phone,
+          address: data.address,
           profilePhoto: imageUrl,
+          role: data.role,
           coins: defaultCoins,
         };
 
-        createUser(updatedData.email, updatedData.password)
+        createUser(data.email, data.password)
           .then(() => {
             updateProfile(auth.currentUser, {
               displayName: updatedData.name,
@@ -66,12 +70,11 @@ const Register = () => {
             })
               .then(() => {
                 axiosPublic
-                  .post("/users", updatedData)
-                  .then(() => {})
+                  .post("/users", updatedData) // Send all data to DB
+                  .then(() => navigate("/"))
                   .catch((error) => console.error("DB Save Error:", error));
 
                 setError("");
-                navigate("/");
               })
               .catch((error) => {
                 setError(error.message);
@@ -101,24 +104,20 @@ const Register = () => {
           name: user.displayName,
           email: user.email,
           profilePhoto: user.photoURL,
+          phone: "Not Provided",
+          address: "Not Provided",
           role: "worker",
           coins: 10,
         };
 
         axiosPublic
           .post("/users", defaultUserData)
-          .then(() => {
-            setError("");
-            navigate("/dashboard");
-          })
-          .catch((error) => {
-            console.error("Google DB Save Error:", error.message);
-            setError("");
-          });
+          .then(() => navigate("/dashboard"))
+          .catch((error) => console.error("Google DB Save Error:", error));
       })
       .catch((error) => {
-        console.error("Google Sign-In Error:", error.message);
         setError(error.message);
+        console.error("Google Sign-In Error:", error.message);
       });
   };
 
@@ -129,102 +128,85 @@ const Register = () => {
       </Helmet>
       <div className="hero bg-base-200 min-h-screen px-4 sm:px-8 lg:px-20">
         <div className="hero-content flex flex-col-reverse lg:flex-row-reverse items-center lg:justify-between gap-8">
-          {/* Lottie Animation */}
           <div className="w-full lg:w-1/2 flex justify-center">
             {animationData && (
               <Lottie
                 animationData={animationData}
-                loop={true}
-                autoplay={true}
+                loop
+                autoplay
                 className="w-64 h-64 sm:w-80 sm:h-80 lg:w-full lg:h-auto"
               />
             )}
           </div>
 
-          {/* Registration Form */}
           <div className="card bg-base-100 w-[270px] md:w-[500px] p-6 shadow-2xl">
             <form onSubmit={handleSubmit(onSubmit)} className="card-body">
               <h1 className="text-4xl font-bold text-center mb-4">
                 Register Now!
               </h1>
+
+              {/* Name */}
               <div className="form-control">
-                <label className="label">
-                  <span className="label-text">Name</span>
-                </label>
+                <label className="label">Name</label>
                 <input
                   type="text"
                   {...register("name", { required: "Name is required." })}
                   placeholder="Name"
                   className="input input-bordered"
                 />
-                {errors.name && (
-                  <span className="text-red-500 text-xs">{errors.name.message}</span>
-                )}
+                {errors.name && <span className="text-red-500 text-xs">{errors.name.message}</span>}
               </div>
 
+              {/* Email */}
               <div className="form-control">
-                <label className="label">
-                  <span className="label-text">Email</span>
-                </label>
+                <label className="label">Email</label>
                 <input
                   type="email"
-                  {...register("email", {
-                    required: "Email is required.",
-                    pattern: {
-                      value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-                      message: "Invalid email format.",
-                    },
-                  })}
+                  {...register("email", { required: "Email is required." })}
                   placeholder="Email"
                   className="input input-bordered"
                 />
-                {errors.email && (
-                  <span className="text-red-500 text-xs">{errors.email.message}</span>
-                )}
+                {errors.email && <span className="text-red-500 text-xs">{errors.email.message}</span>}
               </div>
 
+              {/* Phone Number */}
               <div className="form-control">
-                <label className="label">
-                  <span className="label-text">Profile Photo</span>
-                </label>
+                <label className="label">Phone Number</label>
+                <input
+                  type="tel"
+                  {...register("phone", { required: "Phone number is required." })}
+                  placeholder="Phone Number"
+                  className="input input-bordered"
+                />
+                {errors.phone && <span className="text-red-500 text-xs">{errors.phone.message}</span>}
+              </div>
+
+              {/* Address */}
+              <div className="form-control">
+                <label className="label">Address</label>
+                <input
+                  type="text"
+                  {...register("address", { required: "Address is required." })}
+                  placeholder="Address"
+                  className="input input-bordered"
+                />
+                {errors.address && <span className="text-red-500 text-xs">{errors.address.message}</span>}
+              </div>
+
+              {/* Profile Photo */}
+              <div className="form-control">
+                <label className="label">Profile Photo</label>
                 <input
                   type="file"
-                  {...register("profilePhoto", {
-                    required: "Profile photo is required.",
-                  })}
+                  {...register("profilePhoto", { required: "Profile photo is required." })}
                   className="file-input file-input-bordered w-full"
                 />
-                {errors.profilePhoto && (
-                  <span className="text-red-500 text-xs">
-                    {errors.profilePhoto.message}
-                  </span>
-                )}
+                {errors.profilePhoto && <span className="text-red-500 text-xs">{errors.profilePhoto.message}</span>}
               </div>
 
+              {/* Password */}
               <div className="form-control">
-                <label className="label">
-                  <span className="label-text">Role</span>
-                </label>
-                <select
-                  {...register("role", { required: "Role is required" })}
-                  className="select select-bordered"
-                  defaultValue=""
-                >
-                  <option value="" disabled>
-                    Choose Your Role
-                  </option>
-                  <option value="worker">Worker</option>
-                  <option value="buyer">Buyer</option>
-                </select>
-                {errors.role && (
-                  <p className="text-red-500 text-xs">{errors.role.message}</p>
-                )}
-              </div>
-
-              <div className="form-control">
-                <label className="label">
-                  <span className="label-text">Password</span>
-                </label>
+                <label className="label">Password</label>
                 <input
                   type="password"
                   {...register("password", {
@@ -243,32 +225,38 @@ const Register = () => {
                   className="input input-bordered"
                 />
                 {errors.password && (
-                  <span className="text-red-500 text-xs">
-                    {errors.password.message}
-                  </span>
+                  <span className="text-red-500 text-xs">{errors.password.message}</span>
                 )}
               </div>
 
-              <div className="form-control mt-6">
-                <button type="submit" className="btn btn-primary">
-                  Register
-                </button>
+              {/* Role */}
+              <div className="form-control">
+                <label className="label">Role</label>
+                <select
+                  {...register("role", { required: "Role is required" })}
+                  className="select select-bordered"
+                  defaultValue=""
+                >
+                  <option value="" disabled>Choose Your Role</option>
+                  <option value="worker">Worker</option>
+                  <option value="buyer">Buyer</option>
+                </select>
+                {errors.role && <span className="text-red-500 text-xs">{errors.role.message}</span>}
               </div>
-              <p className="text-sm text-center mt-3">
-                Already have an account?{" "}
-                <Link to="/login" className="text-blue-600">
-                  Login
-                </Link>
-              </p>
+
+              {/* Submit */}
+              <div className="form-control mt-6">
+                <button type="submit" className="btn btn-primary">Register</button>
+              </div>
             </form>
+
             <div className="w-full flex justify-center mt-4">
               <button onClick={handleGoogleSignIn} className="btn btn-outline w-full">
                 Sign In with Google
               </button>
             </div>
-            {error && (
-              <p className="text-red-500 text-center mt-3">{error}</p>
-            )}
+
+            {error && <p className="text-red-500 text-center mt-3">{error}</p>}
           </div>
         </div>
       </div>

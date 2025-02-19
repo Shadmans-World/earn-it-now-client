@@ -149,14 +149,20 @@ const Dashboard = () => {
 
             {/* User Profile Card */}
             <div className="bg-white rounded-lg shadow-lg p-6 w-full md:w-96 flex flex-col items-center border border-gray-200">
-              <img
-                src={currentUser.profilePhoto}
-                alt={currentUser.name}
-                className="w-32 h-32 rounded-full mb-4 shadow-md border-4 border-orange-500"
-              />
-              <p className="text-xl font-semibold text-gray-700">{currentUser.name}</p>
-              <p className="text-sm text-gray-500 mb-2">{currentUser.email}</p>
-            </div>
+  <img
+    src={currentUser.profilePhoto}
+    alt={currentUser.name}
+    className="w-32 h-32 rounded-full mb-4 shadow-md border-4 border-orange-500"
+  />
+  <p className="text-xl font-semibold text-gray-700">{currentUser.name}</p>
+  <p className="text-sm text-gray-500 mb-2">{currentUser.email}</p>
+
+  {/* Phone */}
+  <p className="text-sm text-gray-500 mb-2">{currentUser.phone}</p>
+
+  {/* Address */}
+  <p className="text-sm text-gray-500 mb-2">{currentUser.address}</p>
+</div>
 
             {/* Chart Section */}
             <div className="mt-8 w-full max-w-5xl grid grid-cols-1 md:grid-cols-2 gap-6">
