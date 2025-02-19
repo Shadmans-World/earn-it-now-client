@@ -3,6 +3,7 @@ import useProvider from "../../Hooks/useProvider";
 import { Link, NavLink } from "react-router-dom";
 import useDbUser from "../../Hooks/useDbUser";
 import { FaCoins } from "react-icons/fa";
+import DarkModeToggle from "../DarkModeToggle";
 
 const Navbar = () => {
   const { user, logOut } = useProvider();
@@ -151,6 +152,9 @@ const Navbar = () => {
               </div>
             </div>
           )}
+         <div className="ml-2">
+          <DarkModeToggle></DarkModeToggle>
+         </div>
         </div>
       </div>
     </div>

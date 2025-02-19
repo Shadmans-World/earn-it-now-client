@@ -43,10 +43,10 @@ const DashboardNavbar = () => {
             </div>
           </div>
 
-          {/* Notifications */}
+          {/* Notifications
           <button>
             <IoNotifications className="text-3xl" />
-          </button>
+          </button> */}
         </div>
       </div>
     </div>
