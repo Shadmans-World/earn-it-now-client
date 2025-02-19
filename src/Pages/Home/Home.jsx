@@ -22,7 +22,7 @@ const Home = () => {
             <AchievementsSection/>
             <BlogResourcesSection/>
             <ReviewsSection/>
-            
+            <NewsletterSubscription/>
         </div>
     );
 };
