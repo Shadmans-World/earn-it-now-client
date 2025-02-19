@@ -46,8 +46,8 @@ const TestimonialSection = () => {
   ];
 
   return (
-    <div className="my-5 p-3 bg-white">
-      <h2 className="text-2xl font-bold mb-4 text-center">
+    <div className="mt-12 w-full bg-white">
+      <h2 className="text-2xl font-bold  text-center">
         What Our Users Say
       </h2>
       <Swiper
@@ -64,7 +64,7 @@ const TestimonialSection = () => {
       >
         {testimonials.map((testimonial, index) => (
           <SwiperSlide key={index} className="h-full">
-            <div className="bg-white shadow-lg rounded-lg p-6 flex flex-col justify-center items-center h-full min-h-[200px] border-2">
+            <div className="bg-white shadow-lg rounded-lg p-6 w-full flex flex-col justify-center items-center h-full min-h-[200px] border-2">
               <div>
                 <img
                   src={testimonial.photo}

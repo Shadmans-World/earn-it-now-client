@@ -17,9 +17,9 @@ const BlogResourcesSection = () => {
   ];
 
   return (
-    <section className="text-center py-12 bg-gray-100">
+    <section className="text-center py-12 bg-gray-100" id='blogs'>
       <h2 className="text-3xl sm:text-4xl font-bold mb-8">Blog & Resources</h2>
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 px-5">
         {blogPosts.map((post, index) => (
           <div key={index} className="card p-6 shadow-lg">
             <h3 className="text-xl sm:text-2xl font-semibold mb-4">{post.title}</h3>

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import useProvider from "../../Hooks/useProvider";
-import { NavLink } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import useDbUser from "../../Hooks/useDbUser";
 import { FaCoins } from "react-icons/fa";
 
@@ -14,32 +14,33 @@ const Navbar = () => {
       <li>
         <NavLink to="/dashboard">Dashboard</NavLink>
       </li>
-      <li>
-  <NavLink
-    to="/dashboard/purchaseCoin"
-    className={({ isActive }) =>
-      `flex items-center ${
-        currentUser.role !== "buyer"
-          ? "pointer-events-none text-gray-400 cursor-not-allowed"
-          : isActive
-          ? "text-blue-500 font-bold"
-          : "text-black"
-      }`
-    }
-    onClick={(e) => {
-      if (currentUser.role !== "buyer") {
-        e.preventDefault(); // Prevent navigation if not a buyer
+      {currentUser?.role === "buyer" && (
+  <li>
+    <NavLink
+      to="/dashboard/purchaseCoin"
+      className={({ isActive }) =>
+        `flex items-center ${isActive ? "text-blue-500 font-bold" : "text-black"}`
       }
-    }}
-  >
-    <FaCoins className="mr-2" />
-    {currentUser.coins || 0}
-  </NavLink>
-</li>
+    >
+      <FaCoins className="mr-2" />
+      {currentUser?.coins || 0}
+    </NavLink>
+  </li>
+)}
+
       <li>
         <NavLink to="https://github.com/Programming-Hero-Web-Course4/b10a12-client-side-Shadmans-World" target="_blank">
           Join as Developer
         </NavLink>
+      </li>
+      <li>
+        <a href='#blogs'>Blogs</a>
+      </li>
+      <li>
+        <NavLink to='https://www.linkedin.com/in/pkshaon/' target="_blank">Contact Us</NavLink>
+      </li>
+      <li>
+        <a href="#achievements">Achievements</a>
       </li>
     </>
   ) : (
@@ -54,6 +55,12 @@ const Navbar = () => {
         <NavLink to="https://github.com/Programming-Hero-Web-Course4/b10a12-client-side-Shadmans-World" target="_blank">
           Join as Developer
         </NavLink>
+      </li>
+      <li>
+        <a href='#blogs'>Blogs</a>
+      </li>
+      <li>
+        <NavLink to='https://www.linkedin.com/in/pkshaon/' target="_blank">Contact Us</NavLink>
       </li>
     </>
   );

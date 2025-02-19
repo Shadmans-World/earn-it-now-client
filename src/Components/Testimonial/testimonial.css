@@ -1,6 +1,6 @@
 /* Ensure the section has a white background */
 .testimonial-section {
-    background: #ffffff !important; /* Set background to white */
+    background: #ffffff !important; 
     border-radius: 8px;
     padding: 24px;
     position: relative;
