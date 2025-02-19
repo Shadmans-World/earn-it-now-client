@@ -1,19 +1,41 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { NavLink, Outlet, useLocation } from "react-router-dom";
 import { FaCoins, FaHistory, FaHome, FaTasks, FaUsers } from "react-icons/fa";
-import useDbUser from "../../Hooks/useDbUser";
 import { AiOutlineFileDone } from "react-icons/ai";
 import { BiMoneyWithdraw } from "react-icons/bi";
 import { MdTask } from "react-icons/md";
 import Footer from "../../Components/Footer/Footer";
+import useDbUser from "../../Hooks/useDbUser";
+import {
+  LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
+  BarChart, Bar, Legend
+} from "recharts";
+
+// Function to generate random data for both charts
+const generateRandomData = () => {
+  return Array.from({ length: 10 }, (_, index) => ({
+    name: `Day ${index + 1}`,
+    performance: Math.floor(Math.random() * 100) + 10,
+    growth: Math.floor(Math.random() * 80) + 20,
+  }));
+};
 
 const Dashboard = () => {
   const [dbUsers, currentUser] = useDbUser();
+  const [chartData, setChartData] = useState(generateRandomData());
+  const location = useLocation();
 
   const workers = currentUser.role === "worker";
   const admin = currentUser.role === "admin";
   const buyers = currentUser.role === "buyer";
-  const location = useLocation();
+
+  // Update chart data every second
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setChartData(generateRandomData());
+    }, 1000);
+    return () => clearInterval(interval);
+  }, []);
 
   return (
     <div className="flex flex-col md:flex-row">
@@ -124,6 +146,7 @@ const Dashboard = () => {
             <h2 className="text-2xl mb-6 text-center">
               <span className="text-yellow-500">Welcome</span> {currentUser.name}!
             </h2>
+
             {/* User Profile Card */}
             <div className="bg-white rounded-lg shadow-lg p-6 w-full md:w-96 flex flex-col items-center border border-gray-200">
               <img
@@ -133,14 +156,38 @@ const Dashboard = () => {
               />
               <p className="text-xl font-semibold text-gray-700">{currentUser.name}</p>
               <p className="text-sm text-gray-500 mb-2">{currentUser.email}</p>
-              <div className="space-y-2 mb-4">
-                <p className="text-md">Phone: {currentUser.phone || "Not Available"}</p>
-                <p className="text-md">Address: {currentUser.address || "Not Available"}</p>
-                {currentUser.coins && (
-                  <p className="text-md">Coins: {currentUser.coins}</p>
-                )}
+            </div>
+
+            {/* Chart Section */}
+            <div className="mt-8 w-full max-w-5xl grid grid-cols-1 md:grid-cols-2 gap-6">
+              {/* Performance Line Chart */}
+              <div className="bg-white p-5 rounded-lg shadow-md">
+                <h3 className="text-lg font-semibold text-gray-700 mb-4 text-center">Performance Over Time</h3>
+                <ResponsiveContainer width="100%" height={300}>
+                  <LineChart data={chartData}>
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis dataKey="name" />
+                    <YAxis />
+                    <Tooltip />
+                    <Line type="monotone" dataKey="performance" stroke="#ff7300" strokeWidth={3} dot={{ r: 5 }} activeDot={{ r: 8 }} />
+                  </LineChart>
+                </ResponsiveContainer>
               </div>
-             
+
+              {/* Growth Bar Chart */}
+              <div className="bg-white p-5 rounded-lg shadow-md">
+                <h3 className="text-lg font-semibold text-gray-700 mb-4 text-center">Weekly Growth</h3>
+                <ResponsiveContainer width="100%" height={300}>
+                  <BarChart data={chartData}>
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis dataKey="name" />
+                    <YAxis />
+                    <Tooltip />
+                    <Legend />
+                    <Bar dataKey="growth" fill="#82ca9d" />
+                  </BarChart>
+                </ResponsiveContainer>
+              </div>
             </div>
           </div>
         ) : (
