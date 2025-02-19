@@ -1,6 +1,5 @@
 import React from "react";
 import { NavLink, Outlet, useLocation } from "react-router-dom";
-
 import { FaCoins, FaHistory, FaHome, FaTasks, FaUsers } from "react-icons/fa";
 import useDbUser from "../../Hooks/useDbUser";
 import { AiOutlineFileDone } from "react-icons/ai";
@@ -121,10 +120,28 @@ const Dashboard = () => {
       {/* Main Dashboard Content */}
       <div className="w-full flex flex-col min-h-[calc(100vh-86.6px)]">
         {location.pathname === "/dashboard" ? (
-          <div className="flex-grow flex items-center justify-center">
-            <h2 className="text-2xl">
+          <div className="flex-grow flex items-center justify-center flex-col p-5">
+            <h2 className="text-2xl mb-6 text-center">
               <span className="text-yellow-500">Welcome</span> {currentUser.name}!
             </h2>
+            {/* User Profile Card */}
+            <div className="bg-white rounded-lg shadow-lg p-6 w-full md:w-96 flex flex-col items-center border border-gray-200">
+              <img
+                src={currentUser.profilePhoto}
+                alt={currentUser.name}
+                className="w-32 h-32 rounded-full mb-4 shadow-md border-4 border-orange-500"
+              />
+              <p className="text-xl font-semibold text-gray-700">{currentUser.name}</p>
+              <p className="text-sm text-gray-500 mb-2">{currentUser.email}</p>
+              <div className="space-y-2 mb-4">
+                <p className="text-md">Phone: {currentUser.phone || "Not Available"}</p>
+                <p className="text-md">Address: {currentUser.address || "Not Available"}</p>
+                {currentUser.coins && (
+                  <p className="text-md">Coins: {currentUser.coins}</p>
+                )}
+              </div>
+             
+            </div>
           </div>
         ) : (
           <div className="flex-grow">
