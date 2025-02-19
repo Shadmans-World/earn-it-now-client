@@ -6,6 +6,8 @@ import TestimonialSection from '../../Components/Testimonial/TestimonialSection'
 import AboutUsSection from '../../Components/AboutUsSection';
 import AchievementsSection from '../../Components/AchievementsSection';
 import BlogResourcesSection from '../../Components/BlogResourcesSection';
+import ReviewsSection from '../../Components/ReviewsSection';
+import NewsletterSubscription from '../../Components/NewsletterSubscription';
 
 const Home = () => {
     return (
@@ -19,6 +21,8 @@ const Home = () => {
             <AboutUsSection/>
             <AchievementsSection/>
             <BlogResourcesSection/>
+            <ReviewsSection/>
+            
         </div>
     );
 };
